@@ -62,5 +62,8 @@ public class PlayerThrowItem : MonoBehaviour {
         Rigidbody2D thrownPickaxeRB = thrownPickaxe.GetComponent<Rigidbody2D>();
         thrownPickaxeRB.velocity = throwVector;
         thrownPickaxeRB.AddTorque(_spinSpeed);
+
+        // play sound effect
+        SoundManager.instance.PlaySoundEffect(SoundManager.instance.g_throwWhoosh);
     }
 }

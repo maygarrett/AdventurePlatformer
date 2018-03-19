@@ -24,12 +24,17 @@ public class PlayerMovementController : MonoBehaviour {
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
 
+    // sound stuff
+    private int _footstepCounter = 0;
+    private SoundManager _soundManager;
+
     // Use this for initialization
     void Start () {
         // setting references
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         _animator = gameObject.GetComponent<Animator>();
+        _soundManager = SoundManager.instance;
 
         // reference checks
         if(!_feet)
@@ -95,6 +100,24 @@ public class PlayerMovementController : MonoBehaviour {
         if(!_isGrounded)
         { _animator.SetBool("IsJumping", true); }
         else { _animator.SetBool("IsJumping", false); }
+
+
+        // sound checks and triggers
+
+        // checking and counting while player is moving to play footsteps
+        if (_isGrounded)
+        {
+            if (_rb.velocity.x > 0.01f || _rb.velocity.x < -0.01f) // check if player is moving
+            {
+                if (_footstepCounter >= 15)
+                { _soundManager.PlayFootstepSound();
+                  _footstepCounter = 0; }
+                _footstepCounter++;
+            }
+            else { _footstepCounter = 14; }
+        }
+
+
     }
 
 
@@ -119,9 +142,11 @@ public class PlayerMovementController : MonoBehaviour {
         _rb.velocity = newVelocity;
     }
     private void StopMoving()
-    { Vector2 stopLinearVelocity = _rb.velocity;
-      stopLinearVelocity.x = 0.0f;
-      _rb.velocity = stopLinearVelocity; }
+    {
+        Vector2 stopLinearVelocity = _rb.velocity;
+        stopLinearVelocity.x = 0.0f;
+        _rb.velocity = stopLinearVelocity;
+    }
     private void AirMovement()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -156,6 +181,9 @@ public class PlayerMovementController : MonoBehaviour {
         newVelocity.y = _jumpPower;
         newVelocity.x = _rb.velocity.x;
         _rb.velocity = newVelocity;
+
+        // play sound
+        _soundManager.PlayPlayerSoundEffect(_soundManager.g_jumpGrunt);
     }
 
 
