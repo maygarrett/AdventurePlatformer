@@ -52,7 +52,6 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         // assign variables
-        _playerSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
 
         // play music at start
         PlayMusic(_gameMusic);
@@ -61,6 +60,10 @@ public class SoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!_playerSource && GameObject.FindGameObjectWithTag("Player"))
+        { 
+            _playerSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+        }
 
     }
 
