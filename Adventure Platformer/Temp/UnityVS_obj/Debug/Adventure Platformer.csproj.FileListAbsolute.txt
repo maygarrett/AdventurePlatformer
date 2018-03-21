@@ -1,2 +1,0 @@
-C:\Adventure Platformer\Adventure Platformer\Temp\UnityVS_obj\Debug\Adventure Platformer.csprojResolveAssemblyReference.cache
-C:\Adventure Platformer\Adventure Platformer\Temp\UnityVS_obj\Debug\Adventure Platformer.csproj.CoreCompileInputs.cache
