@@ -7,6 +7,8 @@ public class Gate : MonoBehaviour {
     [SerializeField] private GameObject[] _states;
     private int _currentState = 0;
 
+    private int _counter = 0;
+
     [SerializeField] private float _timeBetweenStates;
 
 	// Use this for initialization
@@ -17,32 +19,49 @@ public class Gate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(_counter == 1)
         {
-            if (_currentState == 0)
-            {
-                for (_currentState = 0; _currentState <= _states.Length; _currentState++)
-                {
-                    StartCoroutine(ChangeState());
-                    Debug.Log("End Loop");
-                }
-            }
+            StartCoroutine(ChangeState());
+            _counter = 0;
         }
-		
-	}
+        else if(_counter == 2)
+        {
+            StartCoroutine(ChangeState());
+            _counter = 0;
+        }
+        else if (_counter == 3)
+        {
+            StartCoroutine(ChangeState());
+            _counter = 0;
+        }
+        else if (_counter == 4)
+        {
+            StartCoroutine(ChangeState());
+            _counter = 0;
+        }
+
+
+    }
 
     IEnumerator ChangeState()
     {
-        
+        yield return new WaitForSecondsRealtime(_timeBetweenStates);
 
-        _states[_currentState].SetActive(true);
-
-        if (_currentState - 1 >= 0)
+        if (_currentState + 1 <= _states.Length)
         {
-            _states[_currentState - 1].SetActive(false);
+            _states[_currentState + 1].SetActive(true);
+            _states[_currentState].SetActive(false);
+            _currentState++;
+            _counter = _currentState;
         }
         Debug.Log("Current State Increase");
+    }
 
-        yield return new WaitForSeconds(_timeBetweenStates);
+    public void OpenGate()
+    {
+        if (_currentState == 0)
+        {
+            StartCoroutine(ChangeState());
+        }
     }
 }
